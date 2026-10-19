@@ -1,6 +1,6 @@
 from selenium.webdriver.common.by import By
 
-class TextBoxLocators:
+class TextBoxPageLocators:
 
     #from fields
 
@@ -16,3 +16,11 @@ class TextBoxLocators:
     CREATED_EMAIL = (By.CSS_SELECTOR, "#output #email")
     CREATED_CURRENT_ADDRESS = (By.CSS_SELECTOR, "#output #currentAddress")
     CREATED_PERMANENT_ADDRESS = (By.CSS_SELECTOR, "#output #permanentAddress")
+
+class CheckBoxPageLocators:
+
+    CLOSED_ITEMS = (By.CSS_SELECTOR, "span.rc-tree-switcher.rc-tree-switcher_close")
+    ITEM_LIST = (By.CSS_SELECTOR, "span.rc-tree-checkbox")
+    CHECKED_ITEMS = (By.CSS_SELECTOR, "span.rc-tree-checkbox[aria-checked='true']")
+    TITLE_ITEM = (By.XPATH, "./ancestor::div[@role='treeitem']//span[@class='rc-tree-title']")
+    TEXT_SUCCESS = (By.CSS_SELECTOR, "span.text-success")
