@@ -1,5 +1,5 @@
 import time
-from pages.elements_page import TextBoxPage
+from pages.elements_page import TextBoxPage, CheckBoxPage
 
 
 class TestTextBox:
@@ -15,3 +15,24 @@ class TestTextBox:
         assert email == output_email, 'Email does not match'
         assert current_address == output_current_address, 'Current address does not match'
         assert permanent_address == output_permanent_address, 'Permanent address does not match'
+
+class TestCheckBox:
+    def test_check_box(self, driver):
+        check_box_page = CheckBoxPage(driver, "https://demoqa.com/checkbox")
+        check_box_page.open()
+        check_box_page.open_full_list()
+        check_box_page.click_random_checkbox()
+        input_checkbox = check_box_page.get_checked_checkboxes()
+        output_result = check_box_page.get_output_result()
+        input_checkbox = [
+            check_box_page.normalize_name(name)
+            for name in input_checkbox
+        ]
+
+        output_result = [
+            check_box_page.normalize_name(name)
+            for name in output_result
+        ]
+        print(input_checkbox)
+        print(output_result)
+        assert set(input_checkbox) == set(output_result), 'Checkbox does not match'

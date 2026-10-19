@@ -1,11 +1,12 @@
 import time
+import random
 
 from generator.generator import generated_person
-from locators.elements_page_locators import TextBoxLocators
+from locators.elements_page_locators import TextBoxPageLocators, CheckBoxPageLocators
 from pages.base_page import BasePage
 
 class TextBoxPage(BasePage):
-    locators = TextBoxLocators()
+    locators = TextBoxPageLocators()
 
     def fill_all_fields(self):
         person_info = next(generated_person())
@@ -26,3 +27,43 @@ class TextBoxPage(BasePage):
         current_address = self.element_is_present(self.locators.CREATED_CURRENT_ADDRESS).text.split(':')[1]
         permanent_address = self.element_is_present(self.locators.CREATED_PERMANENT_ADDRESS).text.split(':')[1]
         return full_name, email, current_address, permanent_address
+
+class CheckBoxPage(BasePage):
+    locators = CheckBoxPageLocators()
+
+    def open_full_list(self):
+        while True:
+            items = self.elements_are_found(self.locators.CLOSED_ITEMS)
+
+            if not items:
+                break
+
+            items[0].click()
+
+    def click_random_checkbox(self):
+        item_list = self.elements_are_visible(self.locators.ITEM_LIST)
+
+        count = random.randint(1, 15)
+        random_items = random.sample(item_list[1:], count)
+
+        for item in random_items:
+            self.go_to_element(item)
+            item.click()
+
+    def get_checked_checkboxes(self):
+        checked_list = self.elements_are_found(self.locators.CHECKED_ITEMS)
+        data = []
+        for box in checked_list:
+            title_item = box.find_element(*self.locators.TITLE_ITEM)
+            data.append(title_item.text)
+        return data
+
+    def get_output_result(self):
+        result_list = self.elements_are_found(self.locators.TEXT_SUCCESS)
+        data = []
+        for item in result_list:
+            data.append(item.text)
+        return data
+
+    def normalize_name(self, name):
+        return name.lower().replace(" ", "").replace(".doc", "")
